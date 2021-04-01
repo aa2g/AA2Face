@@ -2,7 +2,7 @@
 #include "Logger.h"
 
 
-Logger g_Logger("AAFace\\aa2facelog.txt", Logger::Priority::WARN);
+Logger g_Logger("AAUnlimited\\lib\\aaface\\aa2facelog.txt", Logger::Priority::WARN);
 
 Logger::Logger(const char * file, Priority prio) : currPrio(Priority::ERR), filter(prio)
 {

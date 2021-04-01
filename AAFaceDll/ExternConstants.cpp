@@ -34,7 +34,7 @@ int g_AA2GetCurrentDialogTab() {
 }
 
 void ExternInit() {
-	g_AA2Base = (DWORD)GetModuleHandle("AA2Edit.exe");
+	g_AA2Base = (DWORD)GetModuleHandle(NULL);
 	g_AA2RedrawFlagTable = g_AA2Base + 0x353160;
 	g_AA2MainWndHandle = (const HWND*)(g_AA2Base + 0x381A6C);
 	g_AA2UpperDialogHandle = (const HWND*)(g_AA2Base + 0x353180);

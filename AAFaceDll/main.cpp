@@ -13,8 +13,8 @@ BOOL WINAPI DllMain(
 {
 	if(fdwReason == DLL_PROCESS_ATTACH) {
 		//config:
-		g_config = Config("AAFace\\config.txt");
-		g_slotFile = SlotFile("AAFace\\slotexists.txt");
+		g_config = Config("AAUnlimited\\lib\\aaface\\config.txt");
+		g_slotFile = SlotFile("AAUnlimited\\lib\\aaface\\slotexists.txt");
 		ExternInit();
 		InjectionsInit();
 		//change calls in code to ours
