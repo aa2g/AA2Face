@@ -107,7 +107,7 @@ hairdialog_refresh_hairflip_inject:
 	call dword ptr [eax]
 	push eax ; save of return value
 
-	push eax ; same parameter as the hair selector index
+	push eax ; same parameter as the hair FLIP index
 	mov eax, [esi+000002A0h]
 	push eax ; and the tab
 	push esi ; the hair dialog class

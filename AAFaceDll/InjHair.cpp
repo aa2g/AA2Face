@@ -186,6 +186,7 @@ int __cdecl GetHairFlipSelectorIndex(HairDialogClass* internclass, int tab, int 
 		return loc_chosenFlips[tab];
 	}
 	else if (loc_hairFlipEditChanged) {
+		//
 		loc_hairFlipEditChanged = false;
 		int ret = GetEditNumber(g_edHairFlipSelector);
 		int oldValue = loc_chosenFlips[tab];
@@ -266,9 +267,16 @@ void RefreshButtonText(HairDialogClass* internclass) {
 	for (int i = 0; i < 135; i++) {
 		HWND btnN = internclass->GetHairSlotButton(i);
 		int newSlot = i + g_pcHairs.CurrPage() * loc_nButtonsPerTab;
-		wchar_t text[64] = { 0 };
-		_itow_s(newSlot, text, 10);
-		SetWindowTextW(btnN, text);
+		if (newSlot > 255) {
+			ShowWindow(btnN, 0);
+		}
+		else {
+			ShowWindow(btnN, 1);
+			wchar_t text[64] = { 0 };
+			_itow_s(newSlot, text, 10);
+			SetWindowTextW(btnN, text);
+		}
+		
 	}
 }
 
@@ -469,6 +477,7 @@ int __cdecl HairDialogNotification(HairDialogClass* internclass,HWND hwndDlg,UIN
 					SetEditNumber(g_edHairFlipSelector, ret);
 				}
 				if (applyChange) {
+					loc_hairEditChanged = true;
 					loc_hairFlipEditChanged = true;
 					internclass->SetHairChangeFlags(loc_lastHairTab);
 				}
