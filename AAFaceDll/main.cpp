@@ -4,6 +4,7 @@
 #include "ExternConstants.h"
 #include "Hooks.h"
 #include "Injections.h"
+#include "Shared.h"
 
 BOOL WINAPI DllMain(
 	_In_ HINSTANCE hinstDLL,
@@ -13,8 +14,9 @@ BOOL WINAPI DllMain(
 {
 	if(fdwReason == DLL_PROCESS_ATTACH) {
 		//config:
-		g_config = Config("AAUnlimited\\lib\\aaface\\config.txt");
-		g_slotFile = SlotFile("AAUnlimited\\lib\\aaface\\slotexists.txt");
+		auto path = Shared::getDLLPath();
+		g_config = Config((path + "aaface\\config.txt").c_str());
+		g_slotFile = SlotFile((path + "aaface\\slotexists.txt").c_str());
 		ExternInit();
 		InjectionsInit();
 		//change calls in code to ours

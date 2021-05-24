@@ -1,10 +1,10 @@
 #include <Windows.h>
 #include "Logger.h"
+#include "Shared.h"
 
+Logger g_Logger(Shared::getDLLPath() + "aaface\\aa2facelog.txt", Logger::Priority::WARN);
 
-Logger g_Logger("AAUnlimited\\lib\\aaface\\aa2facelog.txt", Logger::Priority::WARN);
-
-Logger::Logger(const char * file, Priority prio) : currPrio(Priority::ERR), filter(prio)
+Logger::Logger(std::string file, Priority prio) : currPrio(Priority::ERR), filter(prio)
 {
 	outfile.open(file);
 	if(!outfile.good()) {
