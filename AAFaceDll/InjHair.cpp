@@ -3,6 +3,8 @@
 #include "GenUtils.h"
 #include "Config.h"
 #include "SlotFile.h"
+#include "Shared.h"
+#include "CharacterStruct.h"
 
 INT_PTR g_HairDialogProcReturnValue = 0;
 HWND g_edHairSelector = NULL;
@@ -103,7 +105,11 @@ int __cdecl GetHairSelectorIndex(HairDialogClass* internclass, int tab,int guiCh
 	else if(tab != loc_lastHairTab) {
 		LOGPRIO(Logger::Priority::SPAM) << "hair tab switch from " << loc_lastHairTab << " to " << tab << "; "
 			"loading hair " << loc_chosenHairs[tab] << "\n";
-		loc_lastHairTab = tab;
+		//If the character was just loaded in the maker, let the hair flip function set the tab
+		if (loc_lastHairTab != -1) { 
+			loc_lastHairTab = tab;
+		}
+
 		//hair tab changed, so we should refresh our value with the hair of this tab
 		loc_bEdIgnoreChange = true;
 		SetEditNumber(g_edHairSelector,loc_chosenHairs[tab]);
@@ -161,7 +167,21 @@ int __cdecl GetHairSelectorIndex(HairDialogClass* internclass, int tab,int guiCh
 		}
 		return ret;
 	}
-	return -1;
+	//For hair adjustment, and other things that might reach up to here
+	auto character = Shared::getCharStruct();
+	BYTE* ptr;
+	if (character) {
+		for (int i = 0; i < 4; i++) {
+			ptr = internclass->HairOfTab(i);
+			*ptr = character->m_charData->m_hair.hairs[i];
+			ptr = internclass->FlipBoolOfTab(i);
+			*ptr = character->m_charData->m_hair.hairFlips[i];
+		}
+		return character->m_charData->m_hair.hairs[tab];
+	}
+	else {
+		return -1;
+	}
 }
 
 //like GetHairSelectorIndex, but for flips
@@ -181,8 +201,15 @@ int __cdecl GetHairFlipSelectorIndex(HairDialogClass* internclass, int tab, int 
 	else if (tab != loc_lastHairTab) {
 		LOGPRIO(Logger::Priority::SPAM) << "hair tab switch from " << loc_lastHairTab << " to " << tab << "; "
 			"loading hair " << loc_chosenFlips[tab] << "\n";
-		SetEditNumber(g_edHairSelector, loc_chosenFlips[tab]);
-		
+		//Restores the hair flips in case we are loading the character the first time
+		if (loc_lastHairTab == -1) {
+			BYTE* flipPtr;
+			for (int i = 0; i < 4; i++) {
+				flipPtr = internclass->FlipBoolOfTab(i);
+				*flipPtr = loc_chosenFlips[i];
+			}
+			loc_lastHairTab = tab;
+		}
 		return loc_chosenFlips[tab];
 	}
 	else if (loc_hairFlipEditChanged) {
@@ -218,7 +245,23 @@ int __cdecl GetHairFlipSelectorIndex(HairDialogClass* internclass, int tab, int 
 		}
 		return ret;
 	}
-	return -1;
+	auto character = Shared::getCharStruct();
+	BYTE* ptr;
+	if (character) {
+		for (int i = 0; i < 4; i++) {
+			ptr = internclass->HairOfTab(i);
+			*ptr = character->m_charData->m_hair.hairs[i];
+			ptr = internclass->FlipBoolOfTab(i);
+			*ptr = *ptr = character->m_charData->m_hair.hairFlips[i];
+		}
+		//SetEditNumber(g_edHairFlipSelector, character->m_charData->m_hair.hairFlips[tab]);
+		return character->m_charData->m_hair.hairFlips[tab];
+	}
+	else {
+		return -1;
+	}
+
+
 }
 
 //this function is called twice, once before and once after execution of the init function.
@@ -238,6 +281,7 @@ void __cdecl InitHairTab(HairDialogClass* internclass,bool before) {
 			}
 		}
 		g_Logger << "\n";
+		ShowWindow(internclass->GetFlipButtonWnd(), SW_HIDE);
 	}
 	else {
 		//after the call, we look at the hair, and correct them if they were changed
@@ -571,7 +615,7 @@ void RefreshHairSelectorPosition(HairDialogClass* internclass) {
 	newPageLoc.y = flipRect.top;
 	g_pcHairs.MoveTo(newPageLoc);
 
-	x = flipRect.left + 100;
+	x = flipRect.left -13;
 	y = flipRect.top - 2;
 	xw = flipRect.right - flipRect.left;
 	yw = flipRect.bottom - flipRect.top;

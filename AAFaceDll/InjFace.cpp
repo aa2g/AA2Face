@@ -3,6 +3,7 @@
 #include "GenUtils.h"
 #include "SlotFile.h"
 #include <fstream>
+#include "Shared.h"
 
 HWND g_cbFaceSelector = NULL;
 
@@ -106,7 +107,8 @@ void __cdecl FaceDialogAfterInit(FaceDialogClass* internclass, HWND wnd) {
 
 	wchar_t wline[256] = L"--Select Above--";
 	SendMessageW(g_cbFaceSelector,CB_ADDSTRING,0,(LPARAM)wline);
-	std::ifstream in("AAUnlimited\\lib\\aaface\\items.txt");
+	auto path = Shared::getDLLPath() + "aaface\\items.txt";
+	std::ifstream in(path);
 
 	if (!in.good()) {
 		LOGPRIO(Logger::Priority::ERR) << "Could not populate combo box because items.txt could not be opened.\n";

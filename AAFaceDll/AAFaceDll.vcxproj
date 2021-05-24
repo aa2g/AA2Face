@@ -144,10 +144,14 @@
     <ClCompile Include="PageControl.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="PersonalityDialogClass.cpp" />
+    <ClCompile Include="Shared.cpp" />
     <ClCompile Include="SlotFile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BoundUpDownControl.h" />
+    <ClInclude Include="CharacterData.h" />
+    <ClInclude Include="CharacterStatus.h" />
+    <ClInclude Include="CharacterStruct.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="ExternConstants.h" />
     <ClInclude Include="GenUtils.h" />
@@ -163,7 +167,10 @@
     <ClInclude Include="Injections.h" />
     <ClInclude Include="PageControl.h" />
     <ClInclude Include="Parser.h" />
+    <ClInclude Include="Shared.h" />
     <ClInclude Include="SlotFile.h" />
+    <ClInclude Include="XXFile.h" />
+    <ClInclude Include="XXFileFace.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="config.txt" />

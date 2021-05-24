@@ -1,6 +1,7 @@
 #pragma once
 #include <fstream>
 #include <Windows.h>
+#include <string>
 
 #define LOGPRIONC(prio) if(g_Logger.FilterPriority(prio)) g_Logger << prio << 
 #define LOGPRIOC(prio) if(g_Logger.FilterPriority(prio)) g_Logger << prio << __FUNCSIC __ ": " <<
@@ -18,7 +19,7 @@ public:
 		CRIT_ERR
 	};
 public:
-	Logger(const char* file, Priority prio);
+	Logger(std::string file, Priority prio);
 	~Logger();
 
 
