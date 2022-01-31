@@ -157,7 +157,7 @@ int __cdecl GetHairSelectorIndex(HairDialogClass* internclass, int tab,int guiCh
 				BOOL newstate = loc_hairFlipSlots[tab][loc_chosenHairs[tab]] > 1 ? TRUE : FALSE;
 				//make sure flip button is not checked if there is no flipped hair
 				if (newstate == FALSE && ret != oldValue) {
-					SendMessage(wnd,BM_SETCHECK,BST_UNCHECKED,0);
+					//SendMessage(wnd,BM_SETCHECK,BST_UNCHECKED,0);
 					LOGPRIO(Logger::Priority::SPAM) << "hair flip button was unchecked because the new hair did not support it\n";
 				}
 				LRESULT res = EnableWindow(wnd,newstate);
@@ -445,14 +445,6 @@ int __cdecl HairDialogNotification(HairDialogClass* internclass,HWND hwndDlg,UIN
 					}
 					else if (loc_lastHairTab >= 0 && loc_lastHairTab <= 3) { //make sure we're on a tab
 						//check whether the new hair is actually valid
-						if(ret <= 134 && IsWindowEnabled(internclass->GetHairSlotButton(ret)) == TRUE) {
-							//if its a button that exists, just click it
-							BYTE currHair = *(internclass->HairOfTab(loc_lastHairTab));
-							SendMessage(internclass->GetHairSlotButton(currHair),BM_SETCHECK,BST_UNCHECKED,0);
-							SendMessage(internclass->GetHairSlotButton(ret),BM_SETCHECK,BST_CHECKED,0);
-							//SendMessage(internclass->GetHairSlotButton(ret),BM_CLICK,BST_CHECKED,0);
-							//applyChange = false;
-						}
 						if (!g_config.IsDisabled(Config::DISABLE_HAIR_SKIPINVALID) && !loc_hairExists[loc_lastHairTab][ret]) {
 							//its invalid, find next valid one
 							BYTE currHair = *(internclass->HairOfTab(loc_lastHairTab));
