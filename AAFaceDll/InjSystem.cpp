@@ -197,14 +197,15 @@ void __cdecl SystemDialogAfterDialogInit(void* internclass,HWND wnd) {
 	RECT rct = GetRelativeRect(saveButton);
 	rct.top -= 20;
 	rct.bottom -= 20;
-	g_cbSystemKeepCardFace = CreateWindowExW(0,L"BUTTON",L"Keep Cardface",WS_CHILD | WS_VISIBLE | BS_CHECKBOX | BS_AUTOCHECKBOX,
+	/*g_cbSystemKeepCardFace = CreateWindowExW(0,L"BUTTON",L"Keep Cardface",WS_CHILD | WS_VISIBLE | BS_CHECKBOX | BS_AUTOCHECKBOX,
 		rct.left,rct.top,rct.right-rct.left,(rct.bottom-rct.top)/2,wnd,0,(HINSTANCE)g_AA2Base,0);
 	if(g_cbSystemKeepCardFace == NULL) {
 		int error = GetLastError();
 		LOGPRIO(Logger::Priority::ERR) << "Could not create cardface checkbox! error " << error << "\n";
 	}
+	*/
 	HFONT font = (HFONT)SendMessageW(saveButton,WM_GETFONT,0,0);
-	SendMessage(g_cbSystemKeepCardFace,WM_SETFONT,(WPARAM)font, TRUE);
+	//SendMessage(g_cbSystemKeepCardFace,WM_SETFONT,(WPARAM)font, TRUE);
 
 	//somewhere here
 	DWORD x = rct.left - (rct.right-rct.left)*2;
